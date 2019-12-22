@@ -1,8 +1,13 @@
-package com.duwamish
+package com.duwamish.signature.client
 
-import java.time.OffsetDateTime
+import com.duwamish.signature.HttpSignature
+import java.security.MessageDigest
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
-class App {
+
+class ClientApp {
 
     companion object {
 
@@ -20,14 +25,19 @@ class App {
                 "HmacSHA256"
         )
 
+        val dd_MMM_yyyy = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
+
+        private val digest = MessageDigest.getInstance("SHA-256").digest("{}".toByteArray())
+        private val payloadDigest = "SHA-256=" + String(Base64.getEncoder().encode(digest))
+
         @JvmStatic
         fun main(args: Array<String>) {
             val authenticationHeader = httpSignature.createAuthenticationHeader(
                     "GET",
                     "jsonplaceholder.typicode.com",
                     "/todos/1",
-                    "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=",
-                    OffsetDateTime.now(),
+                    payloadDigest,
+                    ZonedDateTime.now().format(dd_MMM_yyyy),
                     "application/json",
                     "*/*",
                     10
