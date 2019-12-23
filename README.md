@@ -5,13 +5,12 @@ GET
 ---
 
 ```bash
-curl -H "Authorization: Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created content-type accept,signature=zywGZpc5Wqps17UwwcRTcfyasknxAavN3Grhx5co0Kw=" \
+curl -H "Authorization: Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created content-type accept content-length,signature=6hxh+dhLeoSq4sNlA5c2gPSeXqwG9mphV7ZfHD97ZPw=" \
    -H "Host: jsonplaceholder.typicode.com" \
-   -H "Created: 2019-12-21T12:37:55.553325-08:00" \
+   -H "Created: Sat, 21 Dec 2019 22:52:30 PST" \
    -H "Content-Type: application/json" \
-   -H "Digest: " \ 
    -H "Accept: */*" \
-   -H "Content-Length: 10" \
+   -H "Content-Length: 0" \
   "jsonplaceholder.typicode.com/todos/1"
 ```
 
@@ -22,7 +21,7 @@ POST/ PUT/ PATCH/
 curl --request POST \
    -H "Authorization: Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created content-type digest accept content-length,signature=zywGZpc5Wqps17UwwcRTcfyasknxAavN3Grhx5co0Kw=" \
    -H "Host: jsonplaceholder.typicode.com" \
-   -H "Created: 2019-12-21T12:37:55.553325-08:00" \
+   -H "Created: Sat, 21 Dec 2019 22:52:30 PST" \
    -H "Content-Type: application/json" \
    -H "Digest: " \
    -H "Accept: */*" \

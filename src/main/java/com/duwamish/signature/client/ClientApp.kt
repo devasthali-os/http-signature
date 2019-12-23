@@ -32,7 +32,8 @@ class ClientApp {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val authenticationHeader = httpSignature.createAuthenticationHeader(
+
+            val getAuthenticationHeader = httpSignature.createAuthenticationHeader(
                     "GET",
                     "jsonplaceholder.typicode.com",
                     "/todos/1",
@@ -43,7 +44,7 @@ class ClientApp {
                     10
             )
 
-            println(authenticationHeader)
+            println(getAuthenticationHeader)
         }
 
     }
