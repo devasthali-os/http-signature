@@ -27,7 +27,7 @@ public class HttpSignature(keyId: String,
             method: String,
             host: String,
             uri: String,
-            digest: String,
+            digest: String?,
             created: String,
             contentType: String,
             acceptContent: String,
@@ -37,7 +37,9 @@ public class HttpSignature(keyId: String,
         partOfSignature["Host"] = host
         partOfSignature["Created"] = created
         partOfSignature["Content-Type"] = contentType
-        partOfSignature["Digest"] = digest
+        if(digest != null) {
+            partOfSignature["Digest"] = digest
+        }
         partOfSignature["Accept"] = acceptContent
         partOfSignature["Content-Length"] = contentLength.toString()
 

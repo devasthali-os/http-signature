@@ -6,7 +6,7 @@ public interface IHttpSignature {
             method: String,
             host: String,
             uri: String,
-            digest: String,
+            digest: String?,
             created: String,
             contentType: String,
             acceptContent: String,
