@@ -1,4 +1,4 @@
-package com.duwamish.signature
+package com.duwamish.signature.api
 
 public interface IHttpSignature {
 

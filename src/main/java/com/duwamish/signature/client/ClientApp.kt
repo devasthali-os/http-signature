@@ -1,6 +1,7 @@
 package com.duwamish.signature.client
 
-import com.duwamish.signature.HttpSignature
+import com.duwamish.signature.api.HttpSignature
+import com.duwamish.signature.api.HttpSignatureV2
 import java.security.MessageDigest
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -11,7 +12,7 @@ class ClientApp {
 
     companion object {
 
-        val getHttpSignature = HttpSignature(
+        val getHttpSignature = HttpSignatureV2(
                 "secret-key-alias",
                 "hmac-sha256",
                 listOf(
@@ -21,7 +22,7 @@ class ClientApp {
                 "HmacSHA256"
         )
 
-        val postHttpSignature = HttpSignature(
+        val postHttpSignature = HttpSignatureV2(
                 "secret-key-alias",
                 "hmac-sha256",
                 listOf(
@@ -43,12 +44,15 @@ class ClientApp {
             //
             //GET
             //
+//            val created = ZonedDateTime.now().format(dd_MMM_yyyy)
+            val created = "Sat, 21 Dec 2019 22:52:30 PST"
+
             val getAuthenticationHeader = getHttpSignature.createAuthenticationHeader(
                     "GET",
                     "jsonplaceholder.typicode.com",
                     "/todos/1",
                     null,
-                    ZonedDateTime.now().format(dd_MMM_yyyy),
+                    created,
                     "application/json",
                     "*/*",
                     10
@@ -74,7 +78,7 @@ class ClientApp {
                     "jsonplaceholder.typicode.com",
                     "/todos",
                     payloadDigest,
-                    ZonedDateTime.now().format(dd_MMM_yyyy),
+                    created,
                     "application/json",
                     "*/*",
                     10

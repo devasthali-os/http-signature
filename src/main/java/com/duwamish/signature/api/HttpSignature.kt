@@ -1,4 +1,4 @@
-package com.duwamish.signature
+package com.duwamish.signature.api
 
 import org.tomitribe.auth.signatures.Signature
 import org.tomitribe.auth.signatures.Signer
