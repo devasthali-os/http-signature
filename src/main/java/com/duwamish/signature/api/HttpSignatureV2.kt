@@ -35,21 +35,29 @@ public class HttpSignatureV2(val keyId: String,
         partOfSignature["Accept"] = acceptContent
         partOfSignature["Content-Length"] = contentLength.toString()
 
-        val authorizationHeader = sign(method, uri, partOfSignature)
+        val authorizationHeader = signatureHeader(method, uri, partOfSignature)
 
         return authorizationHeader
     }
 
-    @Throws(IOException::class)
-    fun sign(method: String, uri: String, headerValues: Map<String, String>): String {
-        val signingString = createSigningString(partOfSignatureHeaderDefs.map { h -> h.toLowerCase() }, method, uri, headerValues)
+    private fun signatureHeader(method: String,
+                                uri: String,
+                                headerValues: Map<String, String>): String {
+        return signatureString(signature(method, uri, headerValues))
+    }
+
+    fun signature(method: String,
+                  uri: String,
+                  headerValues: Map<String, String>): String {
+        val signingString = createSigningString(
+                partOfSignatureHeaderDefs.map { h -> h.toLowerCase() }, method, uri, headerValues)
         val binarySignature: ByteArray = sign(signingString.toByteArray())
         val encoded: ByteArray = Base64.getEncoder().encode(binarySignature)
         val signedAndEncodedString = String(encoded, Charsets.UTF_8)
-        return signatureString(signedAndEncodedString)
+        return signedAndEncodedString
     }
 
-    fun sign(signingStringBytes: ByteArray?): ByteArray {
+    private fun sign(signingStringBytes: ByteArray?): ByteArray {
         try {
             val mac: Mac = Mac.getInstance(symmetricAlgo)
             mac.init(key);
@@ -62,7 +70,10 @@ public class HttpSignatureV2(val keyId: String,
     }
 
     @Throws(IOException::class)
-    fun createSigningString(requiredDefs: List<String>, method: String, uri: String?, headerValues: Map<String, String>): String {
+    private fun createSigningString(requiredDefs: List<String>,
+                                    method: String,
+                                    uri: String?,
+                                    headerValues: Map<String, String>): String {
         var method = lowercase(method)
         var headers = lowercase(headerValues)
 
@@ -98,7 +109,7 @@ public class HttpSignatureV2(val keyId: String,
                 ",signature=\"" + signature + '\"'
     }
 
-    fun join(delimiter: String, collection: Collection<*>): String {
+    private fun join(delimiter: String, collection: Collection<*>): String {
         if (collection.isEmpty()) return ""
         val sb = StringBuilder()
         for (obj in collection) {
@@ -107,7 +118,7 @@ public class HttpSignatureV2(val keyId: String,
         return sb.substring(0, sb.length - delimiter.length)
     }
 
-    fun join(delimiter: String, vararg collection: Any?): String? {
+    private fun join(delimiter: String, vararg collection: Any?): String? {
         if (collection.isEmpty()) return ""
         val sb = java.lang.StringBuilder()
         for (obj in collection) {

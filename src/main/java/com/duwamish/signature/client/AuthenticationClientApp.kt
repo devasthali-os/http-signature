@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class ClientApp {
+class AuthenticationClientApp {
 
     companion object {
 
