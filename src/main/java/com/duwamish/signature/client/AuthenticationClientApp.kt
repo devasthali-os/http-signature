@@ -1,9 +1,7 @@
 package com.duwamish.signature.client
 
-import com.duwamish.signature.api.HttpSignature
 import com.duwamish.signature.api.HttpSignatureV2
 import java.security.MessageDigest
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 

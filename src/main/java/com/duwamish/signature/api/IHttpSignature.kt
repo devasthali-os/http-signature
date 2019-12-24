@@ -11,4 +11,9 @@ public interface IHttpSignature {
             contentType: String,
             acceptContent: String,
             contentLength: Int): String
+
+    fun getSignatureString(method: String,
+                           uri: String,
+                           authHeader: String,
+                           requestHeaders: Map<String, String>): String
 }

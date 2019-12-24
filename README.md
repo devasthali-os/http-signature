@@ -34,19 +34,10 @@ run app
 -
 
 ```bash
-## with v1
 ====================GET==================
-Signature keyId="secret-key-alias",algorithm="hmac-sha256",headers="created",signature="gLhSJlRX2i7TpEETQeq4a6Jp5Wo+z2mEGwW0hLRgKZM="
+Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=created,signature=gLhSJlRX2i7TpEETQeq4a6Jp5Wo%2Bz2mEGwW0hLRgKZM%3D
 ======================POST===================
-Signature keyId="secret-key-alias",algorithm="hmac-sha256",headers="host created content-type digest accept content-length",signature="9DbJz/JbPWzM0U03BGfuWzkiKk1KHngTZjvYI7gcGMw="
-
-
-##with v2
-====================GET==================
-Signature keyId="secret-key-alias",algorithm="hmac-sha256",headers="created",signature="gLhSJlRX2i7TpEETQeq4a6Jp5Wo+z2mEGwW0hLRgKZM="
-======================POST===================
-Signature keyId="secret-key-alias",algorithm="hmac-sha256",headers="host created content-type digest accept content-length",signature="9DbJz/JbPWzM0U03BGfuWzkiKk1KHngTZjvYI7gcGMw="
-
+Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created content-type digest accept content-length,signature=9DbJz%2FJbPWzM0U03BGfuWzkiKk1KHngTZjvYI7gcGMw%3D
 ```
 
 references

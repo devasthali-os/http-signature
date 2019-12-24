@@ -1,6 +1,8 @@
 package com.duwamish.signature.api
 
 import java.io.IOException
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.security.Key
 import java.security.NoSuchAlgorithmException
 import java.util.*
@@ -35,9 +37,7 @@ public class HttpSignatureV2(val keyId: String,
         partOfSignature["Accept"] = acceptContent
         partOfSignature["Content-Length"] = contentLength.toString()
 
-        val authorizationHeader = signatureHeader(method, uri, partOfSignature)
-
-        return authorizationHeader
+        return signatureHeader(method, uri, partOfSignature)
     }
 
     private fun signatureHeader(method: String,
@@ -89,6 +89,35 @@ public class HttpSignatureV2(val keyId: String,
         return join("\n", list)
     }
 
+    override fun getSignatureString(method: String,
+                           uri: String,
+                           authHeader: String,
+                           requestHeaders: Map<String, String>): String {
+        val authHeaders = authHeader
+                .split("Signature ")[1]
+                .split(",")
+                .map { k ->
+                    val kv = k.split("=")
+                    mapOf(kv[0] to kv[1])
+
+                }.fold(emptyMap<String, String>()) { acc, elem -> acc.plus(elem) }
+
+        val signingHeaders = authHeaders["headers"]!!
+        val signatureKey = authHeaders["keyId"]
+        val expectedSignature = URLDecoder.decode(authHeaders["signature"])
+
+        val signingValue = requestHeaders[signingHeaders]!!
+
+        //
+        val actualSignature = signature(method, uri, requestHeaders)
+
+        println(actualSignature)
+        println(expectedSignature)
+        println(actualSignature == expectedSignature)
+
+        return actualSignature
+    }
+
     private fun lowercase(headers: Map<String, String>): Map<String, String> {
         val map: MutableMap<String, String> = HashMap()
         for ((key1, value) in headers) {
@@ -103,10 +132,10 @@ public class HttpSignatureV2(val keyId: String,
 
     fun signatureString(signature: String): String {
         return "Signature " +
-                "keyId=\"" + keyId + '\"' +
-                ",algorithm=\"" + algorithm + '\"' +
-                ",headers=\"" + join(" ", partOfSignatureHeaderDefs.map { h -> h.toLowerCase() }) + '\"' +
-                ",signature=\"" + signature + '\"'
+                "keyId=" + keyId +
+                ",algorithm=" + algorithm +
+                ",headers=" + join(" ", partOfSignatureHeaderDefs.map { h -> h.toLowerCase() }) +
+                ",signature=" + URLEncoder.encode(signature)
     }
 
     private fun join(delimiter: String, collection: Collection<*>): String {

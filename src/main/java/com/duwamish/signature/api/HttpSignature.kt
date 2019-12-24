@@ -47,4 +47,11 @@ public class HttpSignature(keyId: String,
 
         return authorizationHeader.toString()
     }
+
+    override fun getSignatureString(method: String,
+                                    uri: String,
+                                    authHeader: String,
+                                    requestHeaders: Map<String, String>): String {
+        TODO("not implemented")
+    }
 }
