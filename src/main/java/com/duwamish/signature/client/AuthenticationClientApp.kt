@@ -5,7 +5,6 @@ import java.security.MessageDigest
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
 class AuthenticationClientApp {
 
     companion object {
@@ -14,9 +13,9 @@ class AuthenticationClientApp {
                 "secret-key-alias",
                 "hmac-sha256",
                 listOf(
-                        "Created"
+                        "Created",
+                        "(request-target)"
                 ),
-                "symmetric-password",
                 "HmacSHA256"
         )
 
@@ -29,8 +28,8 @@ class AuthenticationClientApp {
                         "Content-Type",
                         "Digest",
                         "Accept",
-                        "Content-Length"),
-                "symmetric-password",
+                        "Content-Length"
+                ),
                 "HmacSHA256"
         )
 
@@ -42,6 +41,7 @@ class AuthenticationClientApp {
             //
             //GET
             //
+            println("====================GET==================")
 //            val created = ZonedDateTime.now().format(dd_MMM_yyyy)
             val created = "Sat, 21 Dec 2019 22:52:30 PST"
 
@@ -55,13 +55,13 @@ class AuthenticationClientApp {
                     "*/*",
                     10
             )
-
-            println("====================GET==================")
+            println("")
             println(getAuthenticationHeader)
 
             //
             //POST
             //
+            println("======================POST===================")
             val payload = """
                 {
                   "a": "b"
@@ -81,8 +81,6 @@ class AuthenticationClientApp {
                     "*/*",
                     10
             )
-
-            println("======================POST===================")
             println(postAuthenticationHeader)
         }
 

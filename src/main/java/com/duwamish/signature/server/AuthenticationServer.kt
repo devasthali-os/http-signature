@@ -10,27 +10,33 @@ public class AuthenticationServer {
                 "secret-key-alias",
                 "hmac-sha256",
                 listOf(
-                        "Created"
+                        "Created",
+                        "(request-target)"
                 ),
-                "symmetric-password",
                 "HmacSHA256"
         )
 
         @JvmStatic
         fun main(args: Array<String>) {
 
+            val actualSignature = "sAWZGJTlI5%2FDqFPeNYPZDTFSQ981ZhrGfX92TSzBnfI%3D"
+
             val authHeader =
                     "Signature keyId=secret-key-alias," +
                             "algorithm=hmac-sha256," +
-                            "headers=created," +
-                            "signature=gLhSJlRX2i7TpEETQeq4a6Jp5Wo%2Bz2mEGwW0hLRgKZM%3D"
+                            "headers=created (request-target)," +
+                            "signature=" + actualSignature
 
-            getHttpSignature.getSignatureString(
+            val expectedSignature = getHttpSignature.getSignatureString(
                     "GET",
                     "/todos/1",
                     authHeader,
                     mapOf("created" to "Sat, 21 Dec 2019 22:52:30 PST")
             )
+
+            println(actualSignature)
+            println(expectedSignature)
+            println(actualSignature == expectedSignature)
         }
     }
 }

@@ -9,13 +9,12 @@ import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-public class HttpSignatureV2(val keyId: String,
-                             val algorithm: String,
-                             val partOfSignatureHeaderDefs: List<String>,
-                             val symmetricPassword: String,
-                             val symmetricAlgo: String) : IHttpSignature {
+public class HttpSignatureV2(private val symmetricKeyId: String,
+                             private val algorithm: String,
+                             private val partOfSignatureHeaderDefs: List<String>,
+                             private val symmetricAlgo: String) : IHttpSignature {
 
-    val key: Key = SecretKeySpec(symmetricPassword.toByteArray(), algorithm)
+    private val symmetricKey: Key = SecretKeySpec(symmetricKeyId.toByteArray(), algorithm)
 
     override fun createAuthenticationHeader(
             method: String,
@@ -43,27 +42,28 @@ public class HttpSignatureV2(val keyId: String,
     private fun signatureHeader(method: String,
                                 uri: String,
                                 headerValues: Map<String, String>): String {
-        return signatureString(signature(method, uri, headerValues))
+        return signatureString(createSignature(method, uri, headerValues))
     }
 
-    fun signature(method: String,
-                  uri: String,
-                  headerValues: Map<String, String>): String {
+    fun createSignature(method: String,
+                        uri: String,
+                        headerValues: Map<String, String>): String {
         val signingString = createSigningString(
                 partOfSignatureHeaderDefs.map { h -> h.toLowerCase() }, method, uri, headerValues)
-        val binarySignature: ByteArray = sign(signingString.toByteArray())
+        println("signing string: \n" + signingString)
+        val binarySignature: ByteArray = createHash(signingString.toByteArray())
         val encoded: ByteArray = Base64.getEncoder().encode(binarySignature)
         val signedAndEncodedString = String(encoded, Charsets.UTF_8)
-        return signedAndEncodedString
+        return URLEncoder.encode(signedAndEncodedString)
     }
 
-    private fun sign(signingStringBytes: ByteArray?): ByteArray {
+    private fun createHash(signingStringBytes: ByteArray?): ByteArray {
         try {
             val mac: Mac = Mac.getInstance(symmetricAlgo)
-            mac.init(key);
+            mac.init(symmetricKey);
             return mac.doFinal(signingStringBytes);
         } catch (e: NoSuchAlgorithmException) {
-            throw IllegalArgumentException("HmacSHA1")
+            throw IllegalArgumentException(symmetricAlgo)
         } catch (e: Exception) {
             throw IllegalStateException(e)
         }
@@ -102,18 +102,20 @@ public class HttpSignatureV2(val keyId: String,
 
                 }.fold(emptyMap<String, String>()) { acc, elem -> acc.plus(elem) }
 
-        val signingHeaders = authHeaders["headers"]!!
+        val signingHeaders = authHeaders["headers"]!!.split(" ")
         val signatureKey = authHeaders["keyId"]
         val expectedSignature = URLDecoder.decode(authHeaders["signature"])
 
-        val signingValue = requestHeaders[signingHeaders]!!
+        val signingValue = signingHeaders.map { h ->
+            if (h == "(request-target)") {
+                "$h:  $method $uri"
+            } else {
+                h + ": " + requestHeaders[h]!!
+            }
+        }.joinToString("\n")
 
         //
-        val actualSignature = signature(method, uri, requestHeaders)
-
-        println(actualSignature)
-        println(expectedSignature)
-        println(actualSignature == expectedSignature)
+        val actualSignature = createSignature(method, uri, requestHeaders)
 
         return actualSignature
     }
@@ -132,10 +134,10 @@ public class HttpSignatureV2(val keyId: String,
 
     fun signatureString(signature: String): String {
         return "Signature " +
-                "keyId=" + keyId +
+                "keyId=" + symmetricKeyId +
                 ",algorithm=" + algorithm +
                 ",headers=" + join(" ", partOfSignatureHeaderDefs.map { h -> h.toLowerCase() }) +
-                ",signature=" + URLEncoder.encode(signature)
+                ",signature=" + signature
     }
 
     private fun join(delimiter: String, collection: Collection<*>): String {

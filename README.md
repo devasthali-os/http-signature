@@ -35,9 +35,20 @@ run app
 
 ```bash
 ====================GET==================
-Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=created,signature=gLhSJlRX2i7TpEETQeq4a6Jp5Wo%2Bz2mEGwW0hLRgKZM%3D
+signing string: 
+created: Sat, 21 Dec 2019 22:52:30 PST
+(request-target): get /todos/1
+
+Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=created (request-target),signature=sAWZGJTlI5%2FDqFPeNYPZDTFSQ981ZhrGfX92TSzBnfI%3D
 ======================POST===================
-Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created content-type digest accept content-length,signature=9DbJz%2FJbPWzM0U03BGfuWzkiKk1KHngTZjvYI7gcGMw%3D
+signing string: 
+host: jsonplaceholder.typicode.com
+created: Sat, 21 Dec 2019 22:52:30 PST
+content-type: application/json
+digest: SHA-256=HkkPe9NEvIc2nQ9B99butuBE/CH7nFz3/0g9rVMPq9A=
+accept: */*
+content-length: 10
+Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created content-type digest accept content-length,signature=4RCWHOdYIvtWy3mrGEXOGGCGGMyh1s4YXWh%2FDGgx0TQ%3D
 ```
 
 references
