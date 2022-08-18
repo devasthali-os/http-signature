@@ -54,5 +54,6 @@ Signature keyId=secret-key-alias,algorithm=hmac-sha256,headers=host created cont
 references
 --
 
+- https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-01
 - https://github.com/tomitribe/http-signatures-java
 - https://github.com/joyent/node-http-signature/blob/master/http_signing.md
