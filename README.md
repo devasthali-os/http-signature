@@ -55,5 +55,9 @@ references
 --
 
 - https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-01
+- https://en.wikipedia.org/wiki/HMAC
+- https://github.com/prayagupa/tls.kotlin/tree/master/client
+- https://github.com/prayagupa/tls-python/tree/master/socket-client
+- 
 - https://github.com/tomitribe/http-signatures-java
 - https://github.com/joyent/node-http-signature/blob/master/http_signing.md
