@@ -69,7 +69,7 @@ Authorization: This is the most common scenario for using JWT. Once the user is 
 Information Exchange: 
 JSON Web Tokens are a good way of securely transmitting information between parties. Because JWTs can be signed—for example, using public/private key pairs—you can be sure the senders are who they say they are. Additionally, as the signature is calculated using the header and the payload, you can also verify that the content hasn't been tampered with.
 
-example: 
+example: https://jwt.io/#debugger-io
 --header 
 {
   "alg": "HS256",
