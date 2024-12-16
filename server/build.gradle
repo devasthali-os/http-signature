@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+}
+
+group 'com.duwamish.server'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.tomitribe:tomitribe-http-signatures:1.0"
+    implementation 'com.auth0:java-jwt:4.0.0'
+
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}

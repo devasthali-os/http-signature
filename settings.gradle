@@ -1,2 +1,5 @@
 rootProject.name = 'http-signature'
 
+include 'server'
+include 'client'
+include 'http-signature'
