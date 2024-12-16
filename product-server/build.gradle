@@ -18,6 +18,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.tomitribe:tomitribe-http-signatures:1.0"
     implementation 'com.auth0:java-jwt:4.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

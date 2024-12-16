@@ -1,5 +1,5 @@
 rootProject.name = 'http-signature'
 
-include 'server'
-include 'client'
+include 'product-server'
+include 'product-client'
 include 'http-signature'
